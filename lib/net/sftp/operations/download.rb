@@ -337,7 +337,8 @@ module Net; module SFTP; module Operations
         else
           entry.offset += response[:data].bytesize
           update_progress(:get, entry, response.request[:offset], response[:data])
-          entry.sink.write(response[:data])
+          # for content delivered in utf-8 instead of ascii-8bit
+          entry.sink.write(response[:data].force_encoding('UTF-8'))
           download_next_chunk(entry)
         end
       end
